@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ newsletter.title }} - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-8">
+        <div class="mb-4">
+            <a href="{% url 'newsletter_list' %}" class="text-decoration-none text-muted">
+                <i class="bi bi-arrow-left me-1"></i>Back to Newsletters
+            </a>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-5">
+                <h1 class="fw-bold mb-3">{{ newsletter.title }}</h1>
+
+                <div class="d-flex align-items-center text-muted mb-4 pb-3 border-bottom">
+                    <div>
+                        <i class="bi bi-person-circle me-1"></i> <strong>{{ newsletter.author.username }}</strong>
+                        {% if newsletter.publisher %}
+                            <span class="mx-2">&bull;</span>
+                            <i class="bi bi-building me-1"></i> <strong>{{ newsletter.publisher.name }}</strong>
+
+                            {% if user.is_authenticated and user.role == 'reader' %}
+                                {% if user in newsletter.publisher.reader_subscribers.all %}
+                                    <a href="{% url 'toggle_subscription' 'publisher' newsletter.publisher.id %}" class="badge bg-secondary text-decoration-none ms-2">Unsubscribe</a>
+                                {% else %}
+                                    <a href="{% url 'toggle_subscription' 'publisher' newsletter.publisher.id %}" class="badge bg-primary text-decoration-none ms-2">Subscribe</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                        <span class="mx-2">&bull;</span>
+                        <i class="bi bi-calendar3 me-1"></i> {{ newsletter.created_at|date:"F j, Y" }}
+                    </div>
+                </div>
+
+                <div class="fs-5" style="line-height: 1.8; white-space: pre-line;">
+                    {{ newsletter.content }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

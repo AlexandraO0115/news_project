@@ -1,0 +1,28 @@
+# Django core
+Django==6.0.3
+asgiref==3.11.1
+sqlparse==0.5.5
+
+# Django REST APIs
+djangorestframework==3.16.1
+django-rest-framework-nested==0.0.1
+
+# Database connector
+mysqlclient==2.2.8
+
+# Image handling
+pillow==12.1.1
+
+# Environment variable management
+python-dotenv==1.2.2
+
+# HTTP clients & OAuth (optional, only if using external APIs)
+requests==2.32.5
+certifi==2026.2.25
+charset-normalizer==3.4.5
+idna==3.11
+urllib3==2.6.3
+oauthlib==3.3.1
+requests-oauthlib==2.0.0
+pytokens==0.4.1
+six==1.17.0

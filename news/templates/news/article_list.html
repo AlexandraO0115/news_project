@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Latest News - {{ block.super }}{% endblock title %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h1 class="display-5 border-bottom pb-2">Latest News</h1>
+    </div>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    {% for article in articles %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title fw-bold mb-3">{{ article.title }}</h5>
+                <h6 class="card-subtitle mb-3 text-muted d-flex align-items-center flex-wrap gap-2">
+                    <span>
+                        <i class="bi bi-person"></i> {{ article.author.username }}
+                        {% if user.is_authenticated and user.role == 'reader' %}
+                        <a
+                            href="{% url 'toggle_subscription' 'journalist' article.author.id %}"
+                            class="badge rounded-pill {% if article.author in user.subscribed_journalists.all %}bg-success{% else %}bg-outline-secondary border text-dark{% endif %} text-decoration-none"
+                        >
+                            {% if article.author in user.subscribed_journalists.all %}Subscribed{% else %}+ Subscribe{% endif %}
+                        </a>
+                        {% endif %}
+                    </span>
+
+                    {% if article.publisher %}
+                    <span class="ms-1">
+                        <span class="badge bg-primary">{{ article.publisher.name }}</span>
+                        {% if user.is_authenticated and user.role == 'reader' %}
+                        <a
+                            href="{% url 'toggle_subscription' 'publisher' article.publisher.id %}"
+                            class="ms-1 text-decoration-none small"
+                        >
+                            {% if article.publisher in user.subscribed_publishers.all %}
+                            <i class="bi bi-bell-fill text-warning"></i>
+                            {% else %}
+                            <i class="bi bi-bell text-muted"></i>
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                    </span>
+                    {% else %}
+                    <span class="badge bg-secondary ms-1">Independent</span>
+                    {% endif %}
+                </h6>
+                <p class="card-text text-muted">
+                    {{ article.content|truncatewords:25 }}
+                </p>
+            </div>
+            <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center pb-3">
+                <small class="text-muted"><i class="bi bi-clock"></i> {{ article.created_at|date:"M d, Y" }}</small>
+                <a href="{% url 'article_detail' article.pk %}" class="btn btn-sm btn-outline-primary">Read More</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-light text-center py-5 border shadow-sm" role="alert">
+            <i class="bi bi-journal-x display-4 d-block mb-3 text-muted"></i>
+            <h4 class="alert-heading text-dark">No Articles Yet</h4>
+            <p class="mb-0 text-muted">
+                There are currently no approved articles to display. Check back
+                later!
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}

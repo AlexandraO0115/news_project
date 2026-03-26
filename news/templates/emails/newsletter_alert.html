@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333333;
+                margin: 0;
+                padding: 0;
+            }
+
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                padding: 20px;
+                border: 1px solid #e0e0e0;
+                border-radius: 8px;
+                background-color: #ffffff;
+            }
+
+            .header {
+                background-color: #f8f9fa;
+                padding: 20px;
+                text-align: center;
+                border-bottom: 3px solid #0dcaf0;
+                border-radius: 8px 8px 0 0;
+            }
+
+            .content {
+                padding: 30px 20px;
+            }
+
+            .footer {
+                font-size: 0.85em;
+                color: #6c757d;
+                text-align: center;
+                margin-top: 30px;
+                border-top: 1px solid #eeeeee;
+                padding-top: 20px;
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 12px 24px;
+                color: #ffffff !important;
+                background-color: #0dcaf0;
+                text-decoration: none;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+            .blockquote {
+                border-left: 4px solid #0dcaf0;
+                padding-left: 15px;
+                color: #555555;
+                font-style: italic;
+                background-color: #fcfcfc;
+                padding: 15px;
+            }
+        </style>
+    </head>
+    <body style="background-color: #f4f4f4; padding: 20px">
+        <div class="container">
+            <div class="header">
+                <h2 style="margin: 0; color: #212529">New Newsletter Update</h2>
+            </div>
+            <div class="content">
+                <h3 style="color: #212529">{{ newsletter.title }}</h3>
+                <p>Hello,</p>
+                <p>
+                    <strong>{{ newsletter.author.username }}</strong> has just
+                    published a new newsletter that you are subscribed to.
+                </p>
+                <div class="blockquote">{{ newsletter.content|truncatewords_html:40|safe }}</div>
+                <p style="text-align: center; margin-top: 40px">
+                    <a href="{{ domain }}/newsletter/{{ newsletter.pk }}/" class="btn">Read Full Newsletter</a>
+                </p>
+            </div>
+            <div class="footer">
+                <p>
+                    You received this email because you are subscribed to updates from
+                    <strong>{{ newsletter.author.username }}</strong>
+                    {% if newsletter.publisher %}or <strong>{{ newsletter.publisher.name }}</strong>{% endif %}
+                    .
+                </p>
+                <p>&copy; {% now "Y" %} The Daily Feed.</p>
+            </div>
+        </div>
+    </body>
+</html>

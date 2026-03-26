@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Article - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'unapproved_articles' %}">Editor Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Review Article</li>
+            </ol>
+        </nav>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><strong>Reviewing Draft:</strong> {{ article.title }}</h5>
+                <span class="badge bg-dark">Pending</span>
+            </div>
+
+            <div class="card-body p-4">
+                <h6 class="text-muted mb-3">
+                    <i class="bi bi-person"></i> {{ article.author.username }} &nbsp;|&nbsp;
+                    <i class="bi bi-calendar3"></i> {{ article.created_at|date:"F d, Y - H:i" }}
+                </h6>
+
+                <div class="p-4 bg-light rounded border" style="font-size: 1.1rem;">
+                    {{ article.content|linebreaks }}
+                </div>
+            </div>
+
+            <div class="card-footer d-flex justify-content-between align-items-center bg-white border-top p-3">
+                <div class="text-muted small w-50">
+                    <i class="bi bi-envelope-check text-success fs-5 align-middle me-1"></i>
+                    Approving this article will automatically email all relevant subscribers.
+                </div>
+
+                <form method="post" class="m-0">
+                    {% csrf_token %}
+                    <a href="{% url 'unapproved_articles' %}" class="btn btn-outline-secondary me-2">Cancel</a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle me-1"></i> Approve & Publish
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

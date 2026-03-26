@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Approve Newsletter - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4 mb-5">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-check2-circle me-2"></i>Review Newsletter</h4>
+            </div>
+
+            <div class="card-body p-4">
+                <h3 class="fw-bold">{{ newsletter.title }}</h3>
+                <p class="text-muted mb-4">
+                    Drafted by <strong>{{ newsletter.author.username }}</strong>
+                    {% if newsletter.publisher %}
+                        for <strong>{{ newsletter.publisher.name }}</strong>
+                    {% endif %}
+                </p>
+
+                <div class="bg-light p-4 rounded mb-4" style="white-space: pre-line;">
+                    {{ newsletter.content }}
+                </div>
+
+                <div class="alert alert-warning border-0">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <strong>Action Required:</strong> Approving this newsletter will immediately publish it and send an email notification to all subscribed readers.
+                </div>
+
+                <form method="post" class="d-flex justify-content-between mt-4">
+                    {% csrf_token %}
+                    <a href="{% url 'unapproved_articles' %}" class="btn btn-outline-secondary px-4">Cancel</a>
+                    <button type="submit" class="btn btn-success fw-bold px-4">
+                        Approve & Send Emails <i class="bi bi-send-check ms-1"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

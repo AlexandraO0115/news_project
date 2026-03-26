@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ article.title }} - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <header class="mb-4">
+                <h1 class="fw-bolder mb-2">{{ article.title }}</h1>
+                <div class="text-muted fst-italic mb-2">
+                    Posted on {{ article.created_at|date:"F d, Y" }} by {{ article.author.username }}
+                </div>
+                {% if article.publisher %}
+                    <span class="mx-2">&bull;</span>
+                    <i class="bi bi-building me-1"></i> <strong>{{ article.publisher.name }}</strong>
+
+                    {% if user.is_authenticated and user.role == 'reader' %}
+                        {% if user in article.publisher.reader_subscribers.all %}
+                            <a href="{% url 'toggle_subscription' 'publisher' article.publisher.id %}" class="badge bg-secondary text-decoration-none ms-2">Unsubscribe</a>
+                        {% else %}
+                            <a href="{% url 'toggle_subscription' 'publisher' article.publisher.id %}" class="badge bg-primary text-decoration-none ms-2">Subscribe</a>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                <span class="badge bg-secondary">Independent</span>
+                {% endif %}
+            </header>
+
+            <section class="mb-5" style="font-size: 1.1rem; line-height: 1.8">
+                {{ article.content|linebreaks }}
+            </section>
+
+            <a href="{% url 'article_list' %}" class="btn btn-outline-dark">
+                <i class="bi bi-arrow-left"></i> Back to News Feed
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

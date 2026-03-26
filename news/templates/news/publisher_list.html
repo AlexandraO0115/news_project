@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Publications - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="row mb-4">
+        <div class="col">
+            <h2 class="fw-bold">
+                <i class="bi bi-building me-2"></i>Our Publications
+            </h2>
+            <p class="text-muted">
+                Discover and subscribe to curated publishers to get their latest articles and newsletters delivered straight to your inbox.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        {% for publisher in publishers %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body text-center p-4">
+                        <div class="display-4 text-primary mb-3">
+                            <i class="bi bi-journal-bookmark-fill"></i>
+                        </div>
+                        <h4 class="card-title fw-bold">{{ publisher.name }}</h4>
+                        <p class="card-text text-muted small mb-4">
+                            {% if publisher.description %}
+                                {{ publisher.description }}
+                            {% else %}
+                                A curated publication bringing you the latest updates.
+                            {% endif %}
+                        </p>
+                        {% if user.is_authenticated and user.role == 'reader' %}
+                            {% if user in publisher.reader_subscribers.all %}
+                                <a href="{% url 'toggle_subscription' 'publisher' publisher.id %}"
+                                    class="btn btn-outline-secondary w-100 fw-bold">
+                                    <i class="bi bi-check2 me-1"></i> Subscribed
+                                </a>
+                            {% else %}
+                                <a href="{% url 'toggle_subscription' 'publisher' publisher.id %}"
+                                    class="btn btn-primary w-100 fw-bold">
+                                    <i class="bi bi-plus-lg me-1"></i> Subscribe
+                                </a>
+                            {% endif %}
+                        {% elif not user.is_authenticated %}
+                            <a href="{% url 'login' %}" class="btn btn-outline-primary w-100">Log in to Subscribe</a>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer bg-light border-0 text-center text-muted small">
+                        Joined {{ publisher.created_at|date:"F Y" }}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col">
+                <div class="alert alert-light text-center py-5 shadow-sm border-0">
+                    <h4 class="text-muted">No publications available yet.</h4>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

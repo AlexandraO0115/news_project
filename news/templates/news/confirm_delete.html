@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Confirm Delete - {{ block.super }}{% endblock %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Confirm Deletion</h5>
+                </div>
+                <div class="card-body text-center p-4">
+                    <p class="fs-5">Are you sure you want to delete the following {{ type|lower }}?</p>
+                    <p class="fw-bold fs-4 text-dark mb-4">"{{ object.title }}"</p>
+
+                    <div class="alert alert-warning">
+                        This action cannot be undone.
+                    </div>
+
+                    <form method="post" class="d-flex justify-content-center gap-3">
+                        {% csrf_token %}
+                        <a href="javascript:history.back()" class="btn btn-secondary px-4">Cancel</a>
+                        <button type="submit" class="btn btn-danger px-4">Yes, Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
