@@ -144,9 +144,9 @@ LOGOUT_REDIRECT_URL = "article_list"
 # Email backend for development (prints emails to console)
 # For production, configure a real SMTP backend.
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
