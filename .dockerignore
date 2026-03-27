@@ -3,3 +3,5 @@ __pycache__/
 .git/
 docs/_build/
 myenv
+*.pyc
+db.sqlite3

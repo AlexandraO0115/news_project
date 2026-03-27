@@ -8,15 +8,24 @@ ENV PYTHONUNBUFFERED=1
 # 3. Set the working directory in the container
 WORKDIR /app
 
-# 4. Install dependencies
+# 4. Install system dependencies required for mysqlclient and C-extensions
+# We do this BEFORE copying requirements to take advantage of Docker caching
+RUN apt-get update && apt-get install -y \
+    gcc \
+    pkg-config \
+    default-libmysqlclient-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# 5. Upgrade pip and install Python dependencies
 COPY requirements.txt /app/
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy the rest of the project code
+# 6. Copy the rest of the project code
 COPY . /app/
 
-# 6. Expose the port Django runs on
+# 7. Expose the port Django runs on
 EXPOSE 8000
 
-# 7. Run the application
+# 8. Run the application
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
