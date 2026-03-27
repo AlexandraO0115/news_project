@@ -63,8 +63,8 @@ pip install -r requirements-dev.txt
 
 The project needs a `.env` file to store secret information like your database password and security keys.
 
-1.  Look inside the `news_project` folder for a file named `.env.example`.
-2.  Create a copy of that file and rename the copy to exactly `.env`.
+1. Look inside the `news_project` folder for a file named `.env.example`.
+2. Create a copy of that file and rename the copy to exactly `.env`.
 
 **Windows (Command Prompt):**
 
@@ -78,7 +78,7 @@ copy news_project\.env.example news_project\.env
 cp news_project/.env.example news_project/.env
 ```
 
-3.  Open the new `.env` file in a text editor and fill in the following details:
+3. Open the new `.env` file in a text editor and fill in the following details:
 
 #### Basic Settings
 
@@ -196,6 +196,49 @@ You are ready to go! Start the development server:
 ```bash
 python manage.py runserver
 ```
+
+### 8. Running with Docker
+
+This application includes a Dockerfile for easy deployment and local testing in an isolated environment.
+
+#### 1. Update your .env for Docker
+
+The Docker container is its own isolated network. To connect to a database running on your host machine:
+
+- **Windows/Mac:** Change `DB_HOST=127.0.0.1` to `DB_HOST=host.docker.internal` in your `.env` file.
+- **Linux:** Use your `docker0` IP address (usually `172.17.0.1`).
+
+#### 2. Build the Docker Image
+
+In your project root (where the Dockerfile is located), run:
+
+```bash
+docker build -t news-project-app .
+```
+
+#### 3. Start the Container
+
+Since the project uses python-dotenv, the container will automatically load your variables from the .env file copied during the build:
+
+```bash
+docker run -p 8000:8000 news-project-app
+```
+
+#### 4. Database Setup (Migrations)
+
+If this is your first time running the project or if you have new model changes, run the migrations inside the running container:
+
+1. **Find the Container ID:**
+
+    ```bash
+    docker ps
+    ```
+
+2. **Run Migrations:**
+
+    ```bash
+    docker exec -it <CONTAINER_ID> python manage.py migrate
+    ```
 
 ---
 
