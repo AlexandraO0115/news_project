@@ -1,8 +1,29 @@
-# News Project
+# Role-Based News Application
 
-Welcome to the News Project! This is a web application built using the Django framework. This guide will help you set up the project on your local machine, even if you are new to web development.
+## Overview
+A scalable backend web application built to manage and serve news content dynamically. The system is engineered with a secure, role-based routing architecture to handle specific access permissions and user authentication.
+
+## Core Features
+*   **Role-Based Access Control (RBAC):** Secure user routing and permission management.
+*   **Relational Database Integration:** Structured content storage using MySQL.
+*   **RESTful API Endpoints:** JSON responses for article feeds.
+*   **Containerization:** Docker support for isolated deployment.
+
+## Tech Stack
+*   **Language:** Python 3.12+
+*   **Framework:** Django
+*   **Database:** MySQL / SQLite
+*   **Environment:** Linux / Ubuntu
+*   **Deployment:** Docker
+
+## Status
+**Active Development:** Currently refactoring application logic, refining system architecture, and ensuring strict PEP 8 compliance.
 
 ---
+
+## Local Development Setup
+
+Follow these steps exactly to get the project running on your local machine.
 
 ## Prerequisites
 
